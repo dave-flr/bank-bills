@@ -1,0 +1,47 @@
+{
+  "_from": "fomantic-ui-css",
+  "_id": "fomantic-ui-css@2.7.8",
+  "_inBundle": false,
+  "_integrity": "sha512-oYJczAft5XPjYOxHG2hvQs3/hkNqfbCE9Jw8iC75m2+8Rff9fqQtD0G3UTwVJtS36GsI+Hh9Fc75zXdrBemd4g==",
+  "_location": "/fomantic-ui-css",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "fomantic-ui-css",
+    "name": "fomantic-ui-css",
+    "escapedName": "fomantic-ui-css",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/fomantic-ui-css/-/fomantic-ui-css-2.7.8.tgz",
+  "_shasum": "57186f7d2b55ba70f9fdf127501bbaa2bc3dbe8a",
+  "_spec": "fomantic-ui-css",
+  "_where": "C:\\Users\\Dave\\Documents\\DotNetCore\\bank_bills\\wwwroot\\lib",
+  "author": {
+    "name": "hammy2899"
+  },
+  "bugs": {
+    "url": "https://github.com/fomantic/Fomantic-UI/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "jquery": "^3.4.0"
+  },
+  "deprecated": false,
+  "description": "CSS Only distribution of Fomantic UI",
+  "homepage": "https://fomantic-ui.com",
+  "license": "MIT",
+  "name": "fomantic-ui-css",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fomantic/Fomantic-UI-CSS.git"
+  },
+  "title": "Fomantic UI",
+  "version": "2.7.8"
+}
