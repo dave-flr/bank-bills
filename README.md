@@ -1,0 +1,1 @@
+.NET Core web application to manage and generate bank bills and payment receipts
