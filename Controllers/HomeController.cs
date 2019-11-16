@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using bank_bills.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace bank_bills.Controllers
 {
@@ -18,11 +19,13 @@ namespace bank_bills.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult Table()
         {
             return View();

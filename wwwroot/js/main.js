@@ -1,4 +1,4 @@
-var $duration = 1000;
+var $duration = 300;
 $(document).ready(function () {
     // - ACCOUNT DROPDOWN
     $('.ui.admindropdown').dropdown({
