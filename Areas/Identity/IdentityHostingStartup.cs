@@ -18,7 +18,7 @@ namespace bank_bills.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("SQLiteConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<BankDbContext>();
             });
         }
