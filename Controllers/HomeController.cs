@@ -39,6 +39,12 @@ namespace bank_bills.Controllers
             return View();
         }
 
+        [Authorize]
+        public IActionResult Accounts()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
