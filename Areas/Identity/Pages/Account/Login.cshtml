@@ -2,17 +2,18 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
-    Layout = null;
+ViewData["Title"] = "Log in";
+Layout = null;
 }
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Standard Meta -->
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <!-- Site Properties -->
@@ -24,114 +25,131 @@
     <script src="~/js/site.js"></script>
 
     <style type="text/css">
-    body {
-      background-color: #DADADA;
-    }
-    body > .grid {
-      height: 100%;
-    }
-    .image {
-      margin-top: -100px;
-    }
-    .column {
-      max-width: 450px;
-    }
-  </style>
-    
+        body {
+            background-color: #DADADA;
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+    </style>
+
 </head>
+
 <body>
 
-<div class="ui middle aligned center aligned grid">
-    <div class="column">
-        <h2 class="ui teal image header">
-            <img src="~/img/logo.png" class="image" alt="">
-            <div class="content">
-                Log-in to your account
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <img src="~/img/logo.png" class="image" alt="">
+                <div class="content">
+                    Inicia Sesión en tu cuenta
+                </div>
+            </h2>
+            <form id="account" method="post" class="ui large form">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input asp-for="Input.Email" type="text" placeholder="E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input asp-for="Input.Password" type="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" asp-for="Input.RememberMe">
+                            <label>Recordar nombre de usuario</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="ui fluid large teal submit button">Acceder</button>
+                </div>
+
+                <div asp-validation-summary="All" class="ui error message"></div>
+
+            </form>
+
+            <div class="ui message">
+                <div class="header">
+                    Nuevo? Registra una nueva cuenta
+                </div>
+                <p>
+                    <div class="ui fluid buttons">
+                        <a asp-page="./RegisterNatural" asp-route-returnUrl="@Model.ReturnUrl" class="ui blue button">Persona Natural</a>
+                        <div class="or"></div>
+                        <a asp-page="./RegisterJuridic" asp-route-returnUrl="@Model.ReturnUrl" class="ui violet button">Persona Jurídica</a>
+                    </div>
+                </p>
             </div>
-        </h2>
-        <form id="account" method="post" class="ui large form">
-            <div class="ui stacked segment">
-                <div class="field">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input asp-for="Input.Email" type="text" placeholder="E-mail address">
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
-                        <input asp-for="Input.Password" type="password" placeholder="Password">
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" asp-for="Input.RememberMe">
-                        <label>Remember Me</label>
-                    </div>
-                </div>
-                <button type="submit" class="ui fluid large teal submit button">Login</button>
-            </div>
-
-            <div asp-validation-summary="All" class="ui error message"></div>
-
-        </form>
-
-        <div class="ui message">
-            New to us? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
         </div>
     </div>
-</div>
 
 </body>
-<partial name="_ValidationScriptsPartial"/>
+<partial name="_ValidationScriptsPartial" />
+
 </html>
 
 
 @* <h1>@ViewData["Title"]</h1> *@
 @* <div class="row"> *@
-@*     <div class="col-md-4"> *@
-@*         <section> *@
-@*             <form id="account2" method="post"> *@
-@*                 <h4>Use a local account to log in.</h4> *@
-@*                 <hr/> *@
-@*                 <div asp-validation-summary="All" class="text-danger"></div> *@
-@*                 <div class="form-group"> *@
-@*                     <label asp-for="Input.Email"></label> *@
-@*                     <input asp-for="Input.Email" class="form-control"/> *@
-@*                     <span asp-validation-for="Input.Email" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label asp-for="Input.Password"></label> *@
-@*                     <input asp-for="Input.Password" class="form-control"/> *@
-@*                     <span asp-validation-for="Input.Password" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <div class="checkbox"> *@
-@*                         <label asp-for="Input.RememberMe"> *@
-@*                             <input asp-for="Input.RememberMe"/> *@
-@*                             @Html.DisplayNameFor(m => m.Input.RememberMe) *@
-@*                         </label> *@
-@*                     </div> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <button type="submit" class="btn btn-primary">Log in</button> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <p> *@
-@*                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a> *@
-@*                     </p> *@
-@*                     <p> *@
-@*                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a> *@
-@*                     </p> *@
-@*                     <p> *@
-@*                         <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link" style="padding:0px;margin:0px;border:0px">Resend email confirmation</button> *@
-@*                     </p> *@
-@*                 </div> *@
-@*             </form> *@
-@*         </section> *@
-@*     </div> *@
-@* </div> *@
+    @* <div class="col-md-4"> *@
+        @* <section> *@
+            @* <form id="account2" method="post"> *@
+                @* <h4>Use a local account to log in.</h4> *@
+                @*
+                <hr /> *@
+                @* <div asp-validation-summary="All" class="text-danger"></div> *@
+                @* <div class="form-group"> *@
+                    @* <label asp-for="Input.Email"></label> *@
+                    @* <input asp-for="Input.Email" class="form-control" /> *@
+                    @* <span asp-validation-for="Input.Email" class="text-danger"></span> *@
+                    @* </div> *@
+                @* <div class="form-group"> *@
+                    @* <label asp-for="Input.Password"></label> *@
+                    @* <input asp-for="Input.Password" class="form-control" /> *@
+                    @* <span asp-validation-for="Input.Password" class="text-danger"></span> *@
+                    @* </div> *@
+                @* <div class="form-group"> *@
+                    @* <div class="checkbox"> *@
+                        @* <label asp-for="Input.RememberMe"> *@
+                            @* <input asp-for="Input.RememberMe" /> *@
+                            @* @Html.DisplayNameFor(m => m.Input.RememberMe) *@
+                            @* </label> *@
+                        @* </div> *@
+                    @* </div> *@
+                @* <div class="form-group"> *@
+                    @* <button type="submit" class="btn btn-primary">Log in</button> *@
+                    @* </div> *@
+                @* <div class="form-group"> *@
+                    @* <p> *@
+                        @* <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a> *@
+                        @* </p> *@
+                    @* <p> *@
+                        @* <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a> *@
+                        @* </p> *@
+                    @* <p> *@
+                        @* <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link"
+                            style="padding:0px;margin:0px;border:0px">Resend email confirmation</button> *@
+                        @* </p> *@
+                    @* </div> *@
+                @* </form> *@
+            @* </section> *@
+        @* </div> *@
+    @* </div> *@
 
 @* @section Scripts { *@
-@*     <partial name="_ValidationScriptsPartial"/> *@
+@*
+<partial name="_ValidationScriptsPartial" /> *@
 @* } *@
