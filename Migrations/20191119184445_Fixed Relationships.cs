@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace bank_bills.Migrations
 {
-    public partial class Rebuild : Migration
+    public partial class FixedRelationships : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -156,8 +156,7 @@ namespace bank_bills.Migrations
                 name: "JuridicPersons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     SecondName = table.Column<string>(nullable: true),
                     RUCNumber = table.Column<string>(nullable: true),
@@ -165,12 +164,11 @@ namespace bank_bills.Migrations
                     CardNumber = table.Column<string>(nullable: true),
                     Direction = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    BirthDate = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    BirthDate = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JuridicPersons", x => x.Id);
+                    table.PrimaryKey("PK_JuridicPersons", x => x.UserId);
                     table.ForeignKey(
                         name: "FK_JuridicPersons_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -183,8 +181,7 @@ namespace bank_bills.Migrations
                 name: "NaturalPersons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     SecondName = table.Column<string>(nullable: true),
                     Cedula = table.Column<string>(nullable: true),
@@ -192,12 +189,11 @@ namespace bank_bills.Migrations
                     CardNumber = table.Column<string>(nullable: true),
                     Direction = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    BirthDate = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    BirthDate = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NaturalPersons", x => x.Id);
+                    table.PrimaryKey("PK_NaturalPersons", x => x.UserId);
                     table.ForeignKey(
                         name: "FK_NaturalPersons_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -220,22 +216,24 @@ namespace bank_bills.Migrations
                     Amount = table.Column<float>(nullable: false),
                     AmountGained = table.Column<float>(nullable: false),
                     NaturalPersonId = table.Column<int>(nullable: false),
-                    JuridicPersonId = table.Column<int>(nullable: false)
+                    NaturalPersonUserId = table.Column<string>(nullable: false),
+                    JuridicPersonId = table.Column<int>(nullable: false),
+                    JuridicPersonUserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CheckingAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CheckingAccounts_JuridicPersons_JuridicPersonId",
-                        column: x => x.JuridicPersonId,
+                        name: "FK_CheckingAccounts_JuridicPersons_JuridicPersonUserId",
+                        column: x => x.JuridicPersonUserId,
                         principalTable: "JuridicPersons",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CheckingAccounts_NaturalPersons_NaturalPersonId",
-                        column: x => x.NaturalPersonId,
+                        name: "FK_CheckingAccounts_NaturalPersons_NaturalPersonUserId",
+                        column: x => x.NaturalPersonUserId,
                         principalTable: "NaturalPersons",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -253,23 +251,25 @@ namespace bank_bills.Migrations
                     Amount = table.Column<float>(nullable: false),
                     AmountGained = table.Column<float>(nullable: false),
                     NaturalPersonId = table.Column<int>(nullable: false),
-                    JuridicPersonId = table.Column<int>(nullable: false)
+                    NaturalPersonUserId = table.Column<string>(nullable: true),
+                    JuridicPersonId = table.Column<int>(nullable: false),
+                    JuridicPersonUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SavingAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SavingAccounts_JuridicPersons_JuridicPersonId",
-                        column: x => x.JuridicPersonId,
+                        name: "FK_SavingAccounts_JuridicPersons_JuridicPersonUserId",
+                        column: x => x.JuridicPersonUserId,
                         principalTable: "JuridicPersons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SavingAccounts_NaturalPersons_NaturalPersonId",
-                        column: x => x.NaturalPersonId,
+                        name: "FK_SavingAccounts_NaturalPersons_NaturalPersonUserId",
+                        column: x => x.NaturalPersonUserId,
                         principalTable: "NaturalPersons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,14 +370,14 @@ namespace bank_bills.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CheckingAccounts_JuridicPersonId",
+                name: "IX_CheckingAccounts_JuridicPersonUserId",
                 table: "CheckingAccounts",
-                column: "JuridicPersonId");
+                column: "JuridicPersonUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CheckingAccounts_NaturalPersonId",
+                name: "IX_CheckingAccounts_NaturalPersonUserId",
                 table: "CheckingAccounts",
-                column: "NaturalPersonId");
+                column: "NaturalPersonUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DepositCertificates_CheckingAccountId",
@@ -390,26 +390,14 @@ namespace bank_bills.Migrations
                 column: "SavingAccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JuridicPersons_UserId",
-                table: "JuridicPersons",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NaturalPersons_UserId",
-                table: "NaturalPersons",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SavingAccounts_JuridicPersonId",
+                name: "IX_SavingAccounts_JuridicPersonUserId",
                 table: "SavingAccounts",
-                column: "JuridicPersonId");
+                column: "JuridicPersonUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SavingAccounts_NaturalPersonId",
+                name: "IX_SavingAccounts_NaturalPersonUserId",
                 table: "SavingAccounts",
-                column: "NaturalPersonId");
+                column: "NaturalPersonUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WithdrawalCertificates_CheckingAccountId",

@@ -9,8 +9,8 @@ using bank_bills.Models;
 namespace bank_bills.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20191119032452_Rebuild")]
-    partial class Rebuild
+    [Migration("20191119184445_Fixed Relationships")]
+    partial class FixedRelationships
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -244,14 +244,22 @@ namespace bank_bills.Migrations
                     b.Property<int>("JuridicPersonId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("JuridicPersonUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("NaturalPersonId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("NaturalPersonUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("JuridicPersonId");
+                    b.HasIndex("JuridicPersonUserId");
 
-                    b.HasIndex("NaturalPersonId");
+                    b.HasIndex("NaturalPersonUserId");
 
                     b.ToTable("CheckingAccounts");
                 });
@@ -291,9 +299,8 @@ namespace bank_bills.Migrations
 
             modelBuilder.Entity("bank_bills.Models.JuridicPerson", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("BirthDate")
                         .HasColumnType("TEXT");
@@ -319,23 +326,15 @@ namespace bank_bills.Migrations
                     b.Property<string>("SecondName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasKey("UserId");
 
                     b.ToTable("JuridicPersons");
                 });
 
             modelBuilder.Entity("bank_bills.Models.NaturalPerson", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("BirthDate")
                         .HasColumnType("TEXT");
@@ -361,14 +360,7 @@ namespace bank_bills.Migrations
                     b.Property<string>("SecondName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasKey("UserId");
 
                     b.ToTable("NaturalPersons");
                 });
@@ -403,14 +395,20 @@ namespace bank_bills.Migrations
                     b.Property<int>("JuridicPersonId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("JuridicPersonUserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("NaturalPersonId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("NaturalPersonUserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("JuridicPersonId");
+                    b.HasIndex("JuridicPersonUserId");
 
-                    b.HasIndex("NaturalPersonId");
+                    b.HasIndex("NaturalPersonUserId");
 
                     b.ToTable("SavingAccounts");
                 });
@@ -503,13 +501,13 @@ namespace bank_bills.Migrations
                 {
                     b.HasOne("bank_bills.Models.JuridicPerson", "JuridicPerson")
                         .WithMany("CheckingAccounts")
-                        .HasForeignKey("JuridicPersonId")
+                        .HasForeignKey("JuridicPersonUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("bank_bills.Models.NaturalPerson", "NaturalPerson")
                         .WithMany("CheckingAccounts")
-                        .HasForeignKey("NaturalPersonId")
+                        .HasForeignKey("NaturalPersonUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -551,15 +549,11 @@ namespace bank_bills.Migrations
                 {
                     b.HasOne("bank_bills.Models.JuridicPerson", "JuridicPerson")
                         .WithMany("SavingAccounts")
-                        .HasForeignKey("JuridicPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("JuridicPersonUserId");
 
                     b.HasOne("bank_bills.Models.NaturalPerson", "NaturalPerson")
                         .WithMany("SavingAccounts")
-                        .HasForeignKey("NaturalPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NaturalPersonUserId");
                 });
 
             modelBuilder.Entity("bank_bills.Models.WithdrawalCertificate", b =>
