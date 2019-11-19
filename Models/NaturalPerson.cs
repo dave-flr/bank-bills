@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace bank_bills.Models
 {
@@ -11,7 +12,9 @@ namespace bank_bills.Models
             CheckingAccounts = new List<CheckingAccount>();
         }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
+        [Key] public string UserId { get; set; }
+        public IdentityUser User { get; set; }
         public string Name { get; set; }
         public string SecondName { get; set; }
         public string Cedula { get; set; }
@@ -20,10 +23,7 @@ namespace bank_bills.Models
         public string Direction { get; set; }
         public string PhoneNumber { get; set; }
         public string BirthDate { get; set; }
-        public string UserId { get; set; }
-        public IdentityUser User { get; set; }
         public List<SavingAccount> SavingAccounts { get; set; }
         public List<CheckingAccount> CheckingAccounts { get; set; }
-
     }
 }
