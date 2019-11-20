@@ -1,5 +1,7 @@
 ﻿@model bank_bills.Models.NaturalPerson
-
+@{
+    var defaultAccount = 0;
+}
 <div class="right floated thirteen wide computer sixteen wide phone column" id="content">
     <div class="ui container grid">
         <div class="row">
@@ -23,7 +25,7 @@
                                             <span>
                                                 <h4>Disponible</h4>
                                             </span>
-                                            $
+                                            $ @Model.SavingAccounts[defaultAccount].Amount
                                             <a class="ui tiny label simplelable"><i class="eye icon"></i>
                                                 Detalles</a>
                                         </div>
@@ -48,7 +50,7 @@
                                             <span>
                                                 <h4>Créditos</h4>
                                             </span>
-                                            $ 2341
+                                            $ @Model.SavingAccounts[defaultAccount].DepositCertificates.Count
                                             <a class="ui tiny label simplelable"><i class="eye icon"></i>
                                                 Detalles</a>
                                         </div>
@@ -73,7 +75,7 @@
                                             <span>
                                                 <h4>Débitos</h4>
                                             </span>
-                                            $ 5541
+                                            $ @Model.SavingAccounts[defaultAccount].WithdrawalCertificates.Count
                                             <a class="ui tiny label simplelable"><i class="eye icon"></i>
                                                 Detalles</a>
                                         </div>
@@ -98,7 +100,7 @@
                                             <span>
                                                 <h4>Promedio</h4>
                                             </span>
-                                            $ 9578
+                                            $ 00.00
                                             <a class="ui tiny label simplelable disabled"><i class="eye icon"></i>
                                                 Detalles</a>
                                         </div>

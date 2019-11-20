@@ -33,34 +33,17 @@ namespace bank_bills.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
-            var natural = await _dbContext.NaturalPersons.FindAsync(user.Id);
-            if (natural != null)
-            {
-                natural.SavingAccounts = await _dbContext.SavingAccounts
-                    .Where(np => np.NaturalPersonId == natural.UserId)
-                    .Include(deposits => deposits.DepositCertificates)
-                    .Include(withdrawals => withdrawals.WithdrawalCertificates)
-                    .ToListAsync();
 
+            var natural = await GetNaturalAsync(user.Id);
+            if (natural != null)
                 return View("Natural", natural);
-            }
             else
             {
-                var juridic = await _dbContext.JuridicPersons.FindAsync(user.Id);
+                var juridic = await GetJuridicAsync(user.Id);
                 if (juridic != null)
-                {
-                    juridic.SavingAccounts = await _dbContext.SavingAccounts
-                        .Where(jp => jp.JuridicPersonId == juridic.UserId)
-                        .Include(deposits => deposits.DepositCertificates)
-                        .Include(withdrawals => withdrawals.WithdrawalCertificates)
-                        .ToListAsync();
-
                     return View("Juridic", juridic);
-                }
                 else
-                {
                     return NotFound();
-                }
             }
         }
 
@@ -80,11 +63,36 @@ namespace bank_bills.Controllers
         {
             return View();
         }
+        private async Task<NaturalPerson> GetNaturalAsync(string Id)
+        {
+            var natural = await _dbContext.NaturalPersons.FindAsync(Id);
+            if (natural == null) return null;
+
+            natural.SavingAccounts = await _dbContext.SavingAccounts
+                                .Where(np => np.NaturalPersonId == natural.UserId)
+                                .Include(deposits => deposits.DepositCertificates)
+                                .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                                .ToListAsync();
+            return natural;
+        }
+        private async Task<JuridicPerson> GetJuridicAsync(string Id)
+        {
+            var juridic = await _dbContext.JuridicPersons.FindAsync(Id);
+            if (juridic == null) return null;
+
+            juridic.SavingAccounts = await _dbContext.SavingAccounts
+                       .Where(jp => jp.JuridicPersonId == juridic.UserId)
+                       .Include(deposits => deposits.DepositCertificates)
+                       .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                       .ToListAsync();
+
+            return juridic;
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
