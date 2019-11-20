@@ -1,8 +1,10 @@
-﻿<div class="right floated thirteen wide computer sixteen wide phone column" id="content">
+﻿@model bank_bills.Models.NaturalPerson
+
+<div class="right floated thirteen wide computer sixteen wide phone column" id="content">
     <div class="ui container grid">
         <div class="row">
             <div class="fifteen wide computer sixteen wide phone centered column">
-                <h2><i class="home icon"></i> RESUMEN DE CUENTAS</h2>
+                <h2><i class="home icon"></i> ESTADO DE CUENTA</h2>
                 <div class="ui divider"></div>
                 <div class="ui grid">
                     <!-- BEGIN STATISTIC ITEM -->
@@ -21,11 +23,9 @@
                                             <span>
                                                 <h4>Disponible</h4>
                                             </span>
-                                            $ 7120
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
+                                            $
+                                            <a class="ui tiny label simplelable"><i class="eye icon"></i>
+                                                Detalles</a>
                                         </div>
                                     </div>
                                 </div>
@@ -49,10 +49,8 @@
                                                 <h4>Créditos</h4>
                                             </span>
                                             $ 2341
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
+                                            <a class="ui tiny label simplelable"><i class="eye icon"></i>
+                                                Detalles</a>
                                         </div>
                                     </div>
                                 </div>
@@ -76,10 +74,8 @@
                                                 <h4>Débitos</h4>
                                             </span>
                                             $ 5541
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
+                                            <a class="ui tiny label simplelable"><i class="eye icon"></i>
+                                                Detalles</a>
                                         </div>
                                     </div>
                                 </div>
@@ -103,10 +99,8 @@
                                                 <h4>Promedio</h4>
                                             </span>
                                             $ 9578
-                                            <a class="ui tiny label simplelable disabled">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
+                                            <a class="ui tiny label simplelable disabled"><i class="eye icon"></i>
+                                                Detalles</a>
                                         </div>
                                     </div>
                                 </div>
@@ -115,6 +109,27 @@
                     </div>
                     <!-- End Users -->
                     <!-- END STATISTIC ITEM -->
+                    <div class="eight wide computer sixteen wide phone column justifed">
+                        <h4>MOVIMIENTOS MENSUALES</h4>
+                        <div class="ui divider"></div>
+                        <div class="ui tall stacked segment">
+                            <a class="ui blue ribbon label">Chart.js Bar Chart - Multi Axis</a>
+                            <canvas id="example-multiaxis"></canvas>
+                            <div class="ui divider"></div>
+                            <button id="rand-multi-axis" class="ui blue button simplelable">Randomize
+                                Data</button>
+                        </div>
+                    </div>
+                    <div class="eight wide computer sixteen wide phone column justifed">
+                        <h4>MESES MAS ACTIVOS</h4>
+                        <div class="ui divider"></div>
+                        <div class="ui tall stacked segment">
+                            <a class="ui blue ribbon label">Chart.js Pie Chart - Examples</a>
+                            <canvas id="example-pie"></canvas>
+                            <div class="ui divider"></div>
+                            <button id="rand-pie" class="ui blue button simplelable">Randomize Data</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
