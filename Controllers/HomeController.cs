@@ -63,28 +63,51 @@ namespace bank_bills.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Deposit(float amount)
+        {
+            var defaultAccount = 0;
+            var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
+
+            var natural = await GetNaturalAsync(user.Id);
+            if (natural != null)
+            {
+                natural.SavingAccounts[defaultAccount].Amount += amount;
+                return View("Natural", natural);
+            }
+            else
+            {
+                var juridic = await GetJuridicAsync(user.Id);
+                if (juridic != null)
+                    return View("Juridic", juridic);
+                else
+                    return NotFound();
+            }
+        }
+
         private async Task<NaturalPerson> GetNaturalAsync(string Id)
         {
             var natural = await _dbContext.NaturalPersons.FindAsync(Id);
             if (natural == null) return null;
 
             natural.SavingAccounts = await _dbContext.SavingAccounts
-                                .Where(np => np.NaturalPersonId == natural.UserId)
-                                .Include(deposits => deposits.DepositCertificates)
-                                .Include(withdrawals => withdrawals.WithdrawalCertificates)
-                                .ToListAsync();
+                .Where(np => np.NaturalPersonId == natural.UserId)
+                .Include(deposits => deposits.DepositCertificates)
+                .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                .ToListAsync();
             return natural;
         }
+
         private async Task<JuridicPerson> GetJuridicAsync(string Id)
         {
             var juridic = await _dbContext.JuridicPersons.FindAsync(Id);
             if (juridic == null) return null;
 
             juridic.SavingAccounts = await _dbContext.SavingAccounts
-                       .Where(jp => jp.JuridicPersonId == juridic.UserId)
-                       .Include(deposits => deposits.DepositCertificates)
-                       .Include(withdrawals => withdrawals.WithdrawalCertificates)
-                       .ToListAsync();
+                .Where(jp => jp.JuridicPersonId == juridic.UserId)
+                .Include(deposits => deposits.DepositCertificates)
+                .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                .ToListAsync();
 
             return juridic;
         }
@@ -92,7 +115,7 @@ namespace bank_bills.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

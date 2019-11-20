@@ -126,7 +126,7 @@
                         <a class="item" asp-controller="Home" asp-action="Index"><i class="home icon"></i> Estado General</a>
                         <a class="item" asp-controller="Home" asp-action="Table"><i class="exchange alternate icon"></i> Movimientos</a>
                         <a class="item" asp-controller="Home" asp-action="Accounts"><i class="university icon"></i> Cuentas</a>
-                        <a class="item" asp-controller="Home" asp-action="Accounts"><i class="donate icon"></i> Depositar</a>
+                        <a class="item" id="depositModalShow"><i class="donate icon"></i> Depositar</a>
                         <a class="item" asp-controller="Home" asp-action="Accounts"><i class="money bill wave icon"></i> Retirar</a>
                         @* <div class="ui right pointing dropdown sidebardropdown link item"> *@
                         @*     <i class="angle right icon"></i> *@
@@ -166,6 +166,32 @@
     <!-- BEGIN CONTEN -->
     @RenderBody()
     <!-- END CONTENT -->
+
+
+    @* MODAL *@
+    <div class="ui mini modal" id="depositModal">
+        <i class="close icon"></i>
+        <div class="header">
+            Deposita en tu cuenta
+        </div>
+        <div class="content">
+            <form class="ui massive form" asp-controller="Home" asp-action="Deposit" method="post" name="makeDeposit" id="makeDeposit">
+                    <div class="field">
+                        <label>Cantidad</label>
+                        <input placeholder="00.00" name="amount" type="number" min="0" max="10000">
+                    </div>
+            </form>
+        </div>
+        <div class="actions">
+            <button class="ui black deny button">
+                Cancelar
+            </button>
+            <button form="makeDeposit" class="ui positive right labeled icon button">
+                Aceptar
+                <i class="checkmark icon"></i>
+            </button>
+        </div>
+    </div>
 </div>
 </body>
 <!-- inject:js -->
