@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bank_bills.Models
@@ -17,5 +18,12 @@ namespace bank_bills.Models
         public NaturalPerson NaturalPerson { get; set; }
         public string JuridicPersonId { get; set; }
         public JuridicPerson JuridicPerson { get; set; }
+        public List<DepositCertificate> DepositCertificates { get; set; }
+        public List<WithdrawalCertificate> WithdrawalCertificates { get; set; }
+        public CheckingAccount()
+        {
+            DepositCertificates = new List<DepositCertificate>();
+            WithdrawalCertificates = new List<WithdrawalCertificate>();
+        }
     }
 }

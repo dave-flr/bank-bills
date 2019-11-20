@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bank_bills.Models
@@ -6,6 +7,7 @@ namespace bank_bills.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
+
         public string CreationDate { get; set; }
         public string FreezeStartDate { get; set; }
         public string FreezeEndDate { get; set; }
@@ -17,5 +19,13 @@ namespace bank_bills.Models
         public NaturalPerson NaturalPerson { get; set; }
         public string JuridicPersonId { get; set; }
         public JuridicPerson JuridicPerson { get; set; }
+        public List<DepositCertificate> DepositCertificates { get; set; }
+        public List<WithdrawalCertificate> WithdrawalCertificates { get; set; }
+        
+        public SavingAccount()
+        {
+            DepositCertificates = new List<DepositCertificate>();
+            WithdrawalCertificates = new List<WithdrawalCertificate>();
+        }
     }
 }
