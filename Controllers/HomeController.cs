@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using bank_bills.Models;
+using bank_bills.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace bank_bills.Controllers
 {
@@ -28,21 +30,50 @@ namespace bank_bills.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
+            var natural = await _dbContext.NaturalPersons.FindAsync(user.Id);
+            if (natural != null)
+            {
+                natural.SavingAccounts = await _dbContext.SavingAccounts
+                    .Where(np => np.NaturalPersonId == natural.UserId)
+                    .Include(deposits => deposits.DepositCertificates)
+                    .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                    .ToListAsync();
+
+                return View("Natural", natural);
+            }
+            else
+            {
+                var juridic = await _dbContext.JuridicPersons.FindAsync(user.Id);
+                if (juridic != null)
+                {
+                    juridic.SavingAccounts = await _dbContext.SavingAccounts
+                        .Where(jp => jp.JuridicPersonId == juridic.UserId)
+                        .Include(deposits => deposits.DepositCertificates)
+                        .Include(withdrawals => withdrawals.WithdrawalCertificates)
+                        .ToListAsync();
+
+                    return View("Juridic", juridic);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
         }
 
         [Authorize]
         public IActionResult Table()
         {
-            return View();
+            return View("Table");
         }
 
         [Authorize]
         public IActionResult Accounts()
         {
-            return View();
+            return View("Accounts");
         }
 
         public IActionResult Privacy()
