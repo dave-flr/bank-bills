@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace bank_bills.Models
 {
     public class SavingAccount
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string CreationDate { get; set; }
         public string FreezeStartDate { get; set; }
