@@ -80,24 +80,50 @@ namespace bank_bills.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser {UserName = Input.Email, Email = Input.Email};
-                var typeUser = new JuridicPerson
-                {
-                    UserId = user.Id,
-                    Name = JuridicPersonInputModel.Name,
-                    SecondName = JuridicPersonInputModel.SecondName,
-                    RucNumber = JuridicPersonInputModel.RucNumber,
-                    Pasaport = JuridicPersonInputModel.Pasaport,
-//                    CardNumber = JuridicPersonInputModel.CardNumber,
-                    Direction = JuridicPersonInputModel.Direction,
-                    PhoneNumber = JuridicPersonInputModel.PhoneNumber,
-                    BirthDate = JuridicPersonInputModel.BirthDate
-                };
+                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    var result2 = await _dbContext.JuridicPersons.AddAsync(typeUser);
-                    await _dbContext.SaveChangesAsync();
+                    try
+                    {
+                        var typeUser = new JuridicPerson
+                        {
+                            UserId = user.Id,
+                            Name = JuridicPersonInputModel.Name,
+                            SecondName = JuridicPersonInputModel.SecondName,
+                            RucNumber = JuridicPersonInputModel.RucNumber,
+                            Pasaport = JuridicPersonInputModel.Pasaport,
+                            //                    CardNumber = JuridicPersonInputModel.CardNumber,
+                            Direction = JuridicPersonInputModel.Direction,
+                            PhoneNumber = JuridicPersonInputModel.PhoneNumber,
+                            BirthDate = JuridicPersonInputModel.BirthDate
+                        };
+
+                        //By default a saving account will be created
+                        var savingAccount = new SavingAccount
+                        {
+                            // Id = user.Id,
+                            CreationDate = DateTime.Now.ToString(),
+                            FreezeStartDate = null,
+                            FreezeEndDate = null,
+                            CurrencyType = "US Dolar", //By default
+                            Freezed = false,
+                            Amount = 0,
+                            AmountGained = 0,
+                            NaturalPersonId = null,
+                            JuridicPersonId = user.Id
+                        };
+                        var result2 = await _dbContext.JuridicPersons.AddAsync(typeUser);
+                        var result3 = await _dbContext.SavingAccounts.AddAsync(savingAccount);
+                        await _dbContext.SaveChangesAsync();
+
+                    }
+                    catch (System.Exception)
+                    {
+                        await _userManager.DeleteAsync(user); //In any error, the Identity user 
+                                                              //will be deleted, because one o his tables 
+                                                              //didn't created correctly 
+                    }
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -106,7 +132,7 @@ namespace bank_bills.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new {area = "Identity", userId = user.Id, code = code},
+                        values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -114,7 +140,7 @@ namespace bank_bills.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new {email = Input.Email});
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else
                     {
