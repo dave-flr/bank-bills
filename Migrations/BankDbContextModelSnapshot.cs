@@ -214,9 +214,8 @@ namespace bank_bills.Migrations
 
             modelBuilder.Entity("bank_bills.Models.CheckingAccount", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<float>("Amount")
                         .HasColumnType("REAL");
@@ -239,25 +238,17 @@ namespace bank_bills.Migrations
                     b.Property<bool>("Freezed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("JuridicPersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("JuridicPersonUserId")
-                        .IsRequired()
+                    b.Property<string>("JuridicPersonId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NaturalPersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NaturalPersonUserId")
-                        .IsRequired()
+                    b.Property<string>("NaturalPersonId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JuridicPersonUserId");
+                    b.HasIndex("JuridicPersonId");
 
-                    b.HasIndex("NaturalPersonUserId");
+                    b.HasIndex("NaturalPersonId");
 
                     b.ToTable("CheckingAccounts");
                 });
@@ -274,8 +265,8 @@ namespace bank_bills.Migrations
                     b.Property<float>("Balance")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("CheckingAccountId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CheckingAccountId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Currency")
                         .HasColumnType("TEXT");
@@ -283,8 +274,8 @@ namespace bank_bills.Migrations
                     b.Property<string>("DateHour")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SavingAccountId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("SavingAccountId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -365,9 +356,8 @@ namespace bank_bills.Migrations
 
             modelBuilder.Entity("bank_bills.Models.SavingAccount", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
                     b.Property<float>("Amount")
                         .HasColumnType("REAL");
@@ -390,23 +380,17 @@ namespace bank_bills.Migrations
                     b.Property<bool>("Freezed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("JuridicPersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("JuridicPersonUserId")
+                    b.Property<string>("JuridicPersonId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NaturalPersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NaturalPersonUserId")
+                    b.Property<string>("NaturalPersonId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JuridicPersonUserId");
+                    b.HasIndex("JuridicPersonId");
 
-                    b.HasIndex("NaturalPersonUserId");
+                    b.HasIndex("NaturalPersonId");
 
                     b.ToTable("SavingAccounts");
                 });
@@ -423,8 +407,8 @@ namespace bank_bills.Migrations
                     b.Property<float>("Balance")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("CheckingAccountId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CheckingAccountId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Currency")
                         .HasColumnType("TEXT");
@@ -432,8 +416,8 @@ namespace bank_bills.Migrations
                     b.Property<string>("DateHour")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SavingAccountId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("SavingAccountId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -499,30 +483,22 @@ namespace bank_bills.Migrations
                 {
                     b.HasOne("bank_bills.Models.JuridicPerson", "JuridicPerson")
                         .WithMany("CheckingAccounts")
-                        .HasForeignKey("JuridicPersonUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("JuridicPersonId");
 
                     b.HasOne("bank_bills.Models.NaturalPerson", "NaturalPerson")
                         .WithMany("CheckingAccounts")
-                        .HasForeignKey("NaturalPersonUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NaturalPersonId");
                 });
 
             modelBuilder.Entity("bank_bills.Models.DepositCertificate", b =>
                 {
                     b.HasOne("bank_bills.Models.CheckingAccount", "CheckingAccount")
                         .WithMany()
-                        .HasForeignKey("CheckingAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckingAccountId");
 
                     b.HasOne("bank_bills.Models.SavingAccount", "SavingAccount")
                         .WithMany()
-                        .HasForeignKey("SavingAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SavingAccountId");
                 });
 
             modelBuilder.Entity("bank_bills.Models.JuridicPerson", b =>
@@ -547,26 +523,22 @@ namespace bank_bills.Migrations
                 {
                     b.HasOne("bank_bills.Models.JuridicPerson", "JuridicPerson")
                         .WithMany("SavingAccounts")
-                        .HasForeignKey("JuridicPersonUserId");
+                        .HasForeignKey("JuridicPersonId");
 
                     b.HasOne("bank_bills.Models.NaturalPerson", "NaturalPerson")
                         .WithMany("SavingAccounts")
-                        .HasForeignKey("NaturalPersonUserId");
+                        .HasForeignKey("NaturalPersonId");
                 });
 
             modelBuilder.Entity("bank_bills.Models.WithdrawalCertificate", b =>
                 {
                     b.HasOne("bank_bills.Models.CheckingAccount", "CheckingAccount")
                         .WithMany()
-                        .HasForeignKey("CheckingAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CheckingAccountId");
 
                     b.HasOne("bank_bills.Models.SavingAccount", "SavingAccount")
                         .WithMany()
-                        .HasForeignKey("SavingAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SavingAccountId");
                 });
 #pragma warning restore 612, 618
         }
