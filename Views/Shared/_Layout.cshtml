@@ -127,35 +127,8 @@
                         <a class="item" asp-controller="Home" asp-action="Table"><i class="exchange alternate icon"></i> Movimientos</a>
                         <a class="item" asp-controller="Home" asp-action="Accounts"><i class="university icon"></i> Cuentas</a>
                         <a class="item" id="depositModalShow"><i class="donate icon"></i> Depositar</a>
-                        <a class="item" asp-controller="Home" asp-action="Accounts"><i class="money bill wave icon"></i> Retirar</a>
-                        @* <div class="ui right pointing dropdown sidebardropdown link item"> *@
-                        @*     <i class="angle right icon"></i> *@
-                        @*     Cuentas *@
-                        @*     <div class="menu"> *@
-                        @*         <a class="item"> *@
-                        @*             <p><i class="instagram icon"></i> Instagram</p> *@
-                        @*         </a> *@
-                        @*         <a class="item"> *@
-                        @*             <p><i class="telegram icon"></i> Telegram</p> *@
-                        @*         </a> *@
-                        @*         <a class="item"> *@
-                        @*             <p><i class="whatsapp icon"></i> Whatsapp</p> *@
-                        @*         </a> *@
-                        @*         <a class="item"> *@
-                        @*             <p><i class="steam icon"></i> Steam</p> *@
-                        @*         </a> *@
-                        @*     </div> *@
-                        @* </div> *@
-                        @* <div class="ui item"> *@
-                        @*     <div class="ui fluid selection dropdown moredropdown"> *@
-                        @*         <div class="text">Menu</div> *@
-                        @*         <i class="dropdown icon"></i> *@
-                        @*         <div class="menu"> *@
-                        @*             <p class="item">Choice 1</p> *@
-                        @*             <p class="item">Choice 2</p> *@
-                        @*         </div> *@
-                        @*     </div> *@
-                        @* </div> *@
+                        <a class="item" id="withdrawalModalShow"><i class="money bill wave icon"></i> Retirar</a>
+                        
                     </div>
                 </div>
             </div>
@@ -175,7 +148,7 @@
             Deposita en tu cuenta
         </div>
         <div class="content">
-            <form class="ui massive form" asp-controller="Home" asp-action="Deposit" method="post" name="makeDeposit" id="makeDeposit">
+            <form class="ui massive form" asp-controller="Home" asp-action="Deposits" method="post" name="makeDeposit" id="makeDeposit">
                     <div class="field">
                         <label>Cantidad</label>
                         <input placeholder="00.00" name="amount" type="number" min="0" max="10000">
@@ -192,6 +165,30 @@
             </button>
         </div>
     </div>
+    
+    <div class="ui mini modal" id="withdrawalModal">
+            <i class="close icon"></i>
+            <div class="header">
+                Retirar en tu cuenta
+            </div>
+            <div class="content">
+                <form class="ui massive form" asp-controller="Home" asp-action="Withdrawals" method="post" name="makeWithdrawal" id="makeWithdrawal">
+                        <div class="field">
+                            <label>Cantidad</label>
+                            <input placeholder="00.00" name="amount" type="number" min="0" max="10000">
+                        </div>
+                </form>
+            </div>
+            <div class="actions">
+                <button class="ui black deny button">
+                    Cancelar
+                </button>
+                <button form="makeWithdrawal" class="ui positive right labeled icon button">
+                    Aceptar
+                    <i class="checkmark icon"></i>
+                </button>
+            </div>
+        </div>
 </div>
 </body>
 <!-- inject:js -->

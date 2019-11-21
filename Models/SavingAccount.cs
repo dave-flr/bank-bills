@@ -7,7 +7,6 @@ namespace bank_bills.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-
         public string CreationDate { get; set; }
         public string FreezeStartDate { get; set; }
         public string FreezeEndDate { get; set; }

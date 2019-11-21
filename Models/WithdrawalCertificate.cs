@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace bank_bills.Models
 {
     public class WithdrawalCertificate
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public string DateHour { get; set; }
         public string Currency { get; set; }
         public float Amount { get; set; }

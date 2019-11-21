@@ -1,8 +1,9 @@
 ﻿@model bank_bills.Models.NaturalPerson
 @{
-    var defaultAccount = 0;
+    const int defaultAccount = 0;
 }
 <div class="right floated thirteen wide computer sixteen wide phone column" id="content">
+<input type="hidden" id="error" value="@ViewData["NotEnough"]">
     <div class="ui container grid">
         <div class="row">
             <div class="fifteen wide computer sixteen wide phone centered column">

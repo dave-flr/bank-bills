@@ -51,4 +51,21 @@ $(document).ready(function () {
             })
             .modal('show');
     });
+    $('#withdrawalModalShow').on('click', function () {
+        $('#withdrawalModal')
+            .modal({
+                centered: true
+            })
+            .modal('show');
+    });
+    var error = $('#error').val();
+    if (error) {
+        $('body')
+            .toast({
+                class: 'error',
+                displayTime: 7000,
+                message: `No cuenta con suficiente saldo para realizar esta transacción !`
+            })
+        ;
+    }
 });

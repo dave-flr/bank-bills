@@ -79,7 +79,7 @@ namespace bank_bills.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser {UserName = Input.Email, Email = Input.Email};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -120,8 +120,8 @@ namespace bank_bills.Areas.Identity.Pages.Account
                     catch (System.Exception)
                     {
                         await _userManager.DeleteAsync(user); //In any error, the Identity user 
-                                                                //will be deleted, because one o his tables 
-                                                                //didn't created correctly 
+                        //will be deleted, because one o his tables 
+                        //didn't created correctly 
                     }
 
 
@@ -132,7 +132,7 @@ namespace bank_bills.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code },
+                        values: new {area = "Identity", userId = user.Id, code = code},
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -140,7 +140,7 @@ namespace bank_bills.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                        return RedirectToPage("RegisterConfirmation", new {email = Input.Email});
                     }
                     else
                     {
