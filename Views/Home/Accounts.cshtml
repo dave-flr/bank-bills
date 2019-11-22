@@ -9,119 +9,120 @@
                 <div class="ui grid">
                     <!-- BEGIN STATISTIC ITEM -->
                     <!-- Begin Page Views -->
-                    @foreach (var account in Model.SavingAccounts)
-                    {
-                        <div class="eight wide computer sixteen wide phone centered column">
-                        </div>
+                    @{
+                        if (Model.NaturalPerson != null)
+                        {
+                            foreach (var account in Model.NaturalPerson.SavingAccounts)
+                            {
+                                <div class="eight wide computer sixteen wide phone centered column">
+                                    <div class="ui secondary card">
+                                        <div class="content">
+                                            <div class="header">Cuenta de Ahorro</div>
+                                            <div class="center floated meta">Created at: @account.CreationDate</div>
+                                            <i class="ui avatar icon"></i>
+                                            <p>
+                                                Titular: @Model.NaturalPerson.Name @Model.NaturalPerson.SecondName
+                                            </p>
+                                        </div>
+                                        <div class="simpleimage itemcolor1 image">
+                                            <i class="hand holding usd massive icon "></i>
+                                        </div>
+                                        <div class="content">
+                                            <span class="right floated">
+                                                <i class="dollar bill icon"></i>
+                                                Saldo: @account.Amount
+                                            </span>
+                                            <i class="dollar bill icon"></i>
+                                            Moneda: @account.CurrencyType
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            foreach (var account in Model.NaturalPerson.CheckingAccounts)
+                            {
+                                <div class="eight wide computer sixteen wide phone centered column">
+                                    <div class="ui primary card">
+                                        <div class="content">
+                                        <div class="header">Cuenta Regular</div>
+                                            <div class="center floated meta">Created at: @account.CreationDate</div>
+                                            <i class="ui avatar icon"></i>
+                                            <p>
+                                                Titular: @Model.NaturalPerson.Name @Model.NaturalPerson.SecondName
+                                            </p>
+                                        </div>
+                                        <div class="simpleimage itemcolor1 image">
+                                            <i class="dollar bill massive icon "></i>
+                                        </div>
+                                        <div class="content">
+                                            <span class="right floated">
+                                                <i class="dollar bill icon"></i>
+                                                Saldo: @account.Amount
+                                            </span>
+                                            <i class="dollar bill icon"></i>
+                                            Moneda: @account.CurrencyType
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        if (Model.JuridicPerson != null)
+                        {
+                            foreach (var account in Model.JuridicPerson.SavingAccounts)
+                            {
+                                <div class="eight wide computer sixteen wide phone centered column">
+                                    <div class="ui secondary card">
+                                        <div class="content">
+                                            <div class="header">Cuenta de Ahorro</div>
+                                            <div class="center floated meta">Created at: @account.CreationDate</div>
+                                            <i class="ui avatar icon"></i>
+                                            <p>
+                                                Titular: @Model.JuridicPerson.Name @Model.JuridicPerson.SecondName
+                                            </p>
+                                        </div>
+                                        <div class="simpleimage itemcolor1 image">
+                                            <i class="hand holding usd massive icon "></i>
+                                        </div>
+                                        <div class="content">
+                                            <span class="right floated">
+                                                <i class="dollar bill icon"></i>
+                                                Saldo: @account.Amount
+                                            </span>
+                                            <i class="dollar bill icon"></i>
+                                            Moneda: @account.CurrencyType
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            foreach (var account in Model.JuridicPerson.CheckingAccounts)
+                            {
+                                <div class="eight wide computer sixteen wide phone centered column">
+                                    <div class="ui primary card">
+                                        <div class="content">
+                                        <div class="header">Cuenta Regular</div>
+                                            <div class="center floated meta">Created at: @account.CreationDate</div>
+                                            <i class="ui avatar icon"></i>
+                                            <p>
+                                                Titular: @Model.JuridicPerson.Name @Model.JuridicPerson.SecondName
+                                            </p>
+                                        </div>
+                                        <div class="simpleimage itemcolor1 image">
+                                            <i class="dollar bill massive icon "></i>
+                                        </div>
+                                        <div class="content">
+                                            <span class="right floated">
+                                                <i class="dollar bill icon"></i>
+                                                Saldo: @account.Amount
+                                            </span>
+                                            <i class="dollar bill icon"></i>
+                                            Moneda: @account.CurrencyType
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
                     }
-                    <div class="eight wide computer sixteen wide phone centered column">
-                        <div class="ui centered card">
-                            <div class="content">
-                                <div class="ui centered grid">
-                                    <div class="row">
-                                        <div class="six wide computer column">
-                                            <div class="ui small image simpleimage itemcolor1">
-                                                <i class="hand holding usd icon simpleicon"></i>
-                                            </div>
-                                        </div>
-                                        <div class="ten wide computer column">
-                                            <span>
-                                                <h4>Disponible</h4>
-                                            </span>
-                                            $ 7120
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Page Views -->
-                    <!-- Begin Messages -->
-                    <div class="four wide computer sixteen wide phone centered column">
-                        <div class="ui centered card">
-                            <div class="content">
-                                <div class="ui centered grid">
-                                    <div class="row">
-                                        <div class="six wide computer column">
-                                            <div class="ui small image simpleimage itemcolor2">
-                                                <i class="piggy bank icon simpleicon"></i>
-                                            </div>
-                                        </div>
-                                        <div class="ten wide computer column">
-                                            <span>
-                                                <h4>Créditos</h4>
-                                            </span>
-                                            $ 2341
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Messages -->
-                    <!-- Begin Downloads -->
-                    <div class="four wide computer sixteen wide phone centered column">
-                        <div class="ui centered card">
-                            <div class="content">
-                                <div class="ui centered grid">
-                                    <div class="row">
-                                        <div class="six wide computer column">
-                                            <div class="ui small image simpleimage itemcolor3">
-                                                <i class="credit card icon simpleicon"></i>
-                                            </div>
-                                        </div>
-                                        <div class="ten wide computer column">
-                                            <span>
-                                                <h4>Débitos</h4>
-                                            </span>
-                                            $ 5541
-                                            <a class="ui tiny label simplelable">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Downloads -->
-                    <!-- Begin Users -->
-                    <div class="four wide computer sixteen wide phone centered column">
-                        <div class="ui centered card">
-                            <div class="content">
-                                <div class="ui centered grid">
-                                    <div class="row">
-                                        <div class="six wide computer column">
-                                            <div class="ui small image simpleimage itemcolor4">
-                                                <i class="dollar sign icon simpleicon"></i>
-                                            </div>
-                                        </div>
-                                        <div class="ten wide computer column">
-                                            <span>
-                                                <h4>Promedio</h4>
-                                            </span>
-                                            $ 9578
-                                            <a class="ui tiny label simplelable disabled">
-                                                <i class="eye icon"></i>
-                                                Detalles
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Users -->
-                    <!-- END STATISTIC ITEM -->
                 </div>
             </div>
         </div>

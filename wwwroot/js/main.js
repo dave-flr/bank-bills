@@ -68,4 +68,10 @@ $(document).ready(function () {
             })
         ;
     }
+    $('#print').on('click', function () {
+        let w = window.open();
+        w.document.write($('#example'));
+        w.print();
+        w.close();
+    })
 });

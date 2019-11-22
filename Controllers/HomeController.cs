@@ -19,6 +19,7 @@ namespace bank_bills.Controllers
         private readonly BankDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private const int DefaultAccount = 0;
 
         public HomeController(ILogger<HomeController> logger, BankDbContext dbContext,
             UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
@@ -37,26 +38,58 @@ namespace bank_bills.Controllers
             var natural = await GetNaturalAsync(user.Id);
             if (natural != null)
                 return View("Natural", natural);
-            else
+
+            var juridic = await GetJuridicAsync(user.Id);
+            if (juridic != null)
+                return View("Juridic", juridic);
+            return NotFound();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Table()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
+            var movements = new MovementsViewModel();
+
+            var natural = await GetNaturalAsync(user.Id);
+            if (natural != null)
             {
-                var juridic = await GetJuridicAsync(user.Id);
-                if (juridic != null)
-                    return View("Juridic", juridic);
-                else
-                    return NotFound();
+                movements.DepositCertificates.AddRange(
+                    natural.SavingAccounts[DefaultAccount].DepositCertificates
+                        .OrderBy(certificate => certificate.DateHour));
+                movements.WithdrawalCertificates.AddRange(
+                    natural.SavingAccounts[DefaultAccount].WithdrawalCertificates
+                        .OrderBy(certificate => certificate.DateHour));
+                return View("Table", movements);
             }
+
+            var juridic = await GetJuridicAsync(user.Id);
+            if (juridic != null)
+            {
+                movements.DepositCertificates.AddRange(juridic.SavingAccounts[DefaultAccount].DepositCertificates
+                    .OrderBy(certificate => certificate.DateHour));
+                movements.WithdrawalCertificates.AddRange(juridic.SavingAccounts[DefaultAccount].WithdrawalCertificates
+                    .OrderBy(certificate => certificate.DateHour));
+                return View("Table", movements);
+            }
+
+            return NotFound();
         }
 
         [Authorize]
-        public IActionResult Table()
+        public async Task<IActionResult> Accounts()
         {
-            return View("Table");
-        }
+            var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
+            var accounts = new AccountsViewModel {NaturalPerson = await GetNaturalAsync(user.Id)};
 
-        [Authorize]
-        public IActionResult Accounts()
-        {
-            return View("Accounts");
+            if (accounts.NaturalPerson != null)
+                return View("Accounts", accounts);
+            
+            accounts.JuridicPerson = await GetJuridicAsync(user.Id);
+            if (accounts.JuridicPerson != null)
+                return View("Accounts", accounts);
+            
+            return NotFound();
         }
 
         public IActionResult Privacy()
@@ -67,107 +100,101 @@ namespace bank_bills.Controllers
         [Authorize]
         public async Task<IActionResult> Deposits(float amount)
         {
-            const int defaultAccount = 0;
             var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
 
             var natural = await GetNaturalAsync(user.Id);
             if (natural != null)
             {
-                natural.SavingAccounts[defaultAccount].Amount += amount;
+                natural.SavingAccounts[DefaultAccount].Amount += amount;
                 var depositCertificate = new DepositCertificate
                 {
                     Amount = amount,
-                    Balance = natural.SavingAccounts[defaultAccount].Amount,
+                    Balance = natural.SavingAccounts[DefaultAccount].Amount,
                     Currency = "US Dollar",
                     DateHour = DateTime.Now.ToString("f"),
-                    SavingAccountId = natural.SavingAccounts[defaultAccount].Id
+                    SavingAccountId = natural.SavingAccounts[DefaultAccount].Id
                 };
                 await _dbContext.DepositCertificates.AddAsync(depositCertificate);
                 await _dbContext.SaveChangesAsync();
                 return View("Natural", natural);
 //                return LocalRedirect(returnUrl);
             }
-            else
+
+            var juridic = await GetJuridicAsync(user.Id);
+            if (juridic != null)
             {
-                var juridic = await GetJuridicAsync(user.Id);
-                if (juridic != null)
+                juridic.SavingAccounts[DefaultAccount].Amount += amount;
+                var depositCertificate = new DepositCertificate
                 {
-                    juridic.SavingAccounts[defaultAccount].Amount += amount;
-                    var depositCertificate = new DepositCertificate
-                    {
-                        Amount = amount,
-                        Balance = juridic.SavingAccounts[defaultAccount].Amount,
-                        Currency = "US Dollar",
-                        DateHour = DateTime.Now.ToString("f"),
-                        SavingAccountId = juridic.SavingAccounts[defaultAccount].Id
-                    };
-                    await _dbContext.DepositCertificates.AddAsync(depositCertificate);
-                    await _dbContext.SaveChangesAsync();
-                    return View("Juridic", juridic);
+                    Amount = amount,
+                    Balance = juridic.SavingAccounts[DefaultAccount].Amount,
+                    Currency = "US Dollar",
+                    DateHour = DateTime.Now.ToString("f"),
+                    SavingAccountId = juridic.SavingAccounts[DefaultAccount].Id
+                };
+                await _dbContext.DepositCertificates.AddAsync(depositCertificate);
+                await _dbContext.SaveChangesAsync();
+                return View("Juridic", juridic);
 //                    return LocalRedirect(returnUrl);
-                }
-                else
-                    return NotFound();
             }
+
+            return NotFound();
         }
 
         [Authorize]
         public async Task<IActionResult> Withdrawals(float amount)
         {
-            const int defaultAccount = 0;
             var user = await _userManager.GetUserAsync(HttpContext.User); //Current logged user
 
             var natural = await GetNaturalAsync(user.Id);
             if (natural != null)
             {
-                if (natural.SavingAccounts[defaultAccount].Amount < amount)
+                if (natural.SavingAccounts[DefaultAccount].Amount < amount)
                 {
                     ViewData["NotEnough"] = true;
                     return View("Natural", natural);
                 }
 
-                natural.SavingAccounts[defaultAccount].Amount -= amount;
+                natural.SavingAccounts[DefaultAccount].Amount -= amount;
                 var withdrawalCertificate = new WithdrawalCertificate()
                 {
                     Amount = amount,
-                    Balance = natural.SavingAccounts[defaultAccount].Amount,
+                    Balance = natural.SavingAccounts[DefaultAccount].Amount,
                     Currency = "US Dollar",
                     DateHour = DateTime.Now.ToString("f"),
-                    SavingAccountId = natural.SavingAccounts[defaultAccount].Id
+                    SavingAccountId = natural.SavingAccounts[DefaultAccount].Id
                 };
                 await _dbContext.WithdrawalCertificates.AddAsync(withdrawalCertificate);
                 await _dbContext.SaveChangesAsync();
                 return View("Natural", natural);
 //                return LocalRedirect(returnUrl);
             }
-            else
+
+            var juridic = await GetJuridicAsync(user.Id);
+            if (juridic != null)
             {
-                var juridic = await GetJuridicAsync(user.Id);
-                if (juridic != null)
+                if (juridic.SavingAccounts[DefaultAccount].Amount < amount)
                 {
-                    if (juridic.SavingAccounts[defaultAccount].Amount < amount)
-                    {
-                        ViewData["NotEnough"] = true;
-                        return View("Juridic", juridic);
-                    }
-                    
-                    juridic.SavingAccounts[defaultAccount].Amount -= amount;
-                    var withdrawalCertificate = new WithdrawalCertificate
-                    {
-                        Amount = amount,
-                        Balance = juridic.SavingAccounts[defaultAccount].Amount,
-                        Currency = "US Dollar",
-                        DateHour = DateTime.Now.ToString("f"),
-                        SavingAccountId = juridic.SavingAccounts[defaultAccount].Id
-                    };
-                    await _dbContext.WithdrawalCertificates.AddAsync(withdrawalCertificate);
-                    await _dbContext.SaveChangesAsync();
+                    ViewData["NotEnough"] = true;
                     return View("Juridic", juridic);
-//                    return LocalRedirect(returnUrl);
                 }
-                else
-                    return NotFound();
+
+                juridic.SavingAccounts[DefaultAccount].Amount -= amount;
+                var withdrawalCertificate = new WithdrawalCertificate
+                {
+                    Amount = amount,
+                    Balance = juridic.SavingAccounts[DefaultAccount].Amount,
+                    Currency = "US Dollar",
+                    DateHour = DateTime.Now.ToString("f"),
+                    SavingAccountId = juridic.SavingAccounts[DefaultAccount].Id
+                };
+                await _dbContext.WithdrawalCertificates.AddAsync(withdrawalCertificate);
+                await _dbContext.SaveChangesAsync();
+                return View("Juridic", juridic);
+//                    return LocalRedirect(returnUrl);
             }
+
+            return NotFound();
         }
 
         private async Task<NaturalPerson> GetNaturalAsync(string id)
